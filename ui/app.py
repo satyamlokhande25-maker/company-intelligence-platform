@@ -2,24 +2,35 @@ import sys
 import os
 from pathlib import Path
 
-# 1. Root Path Resolution (Must run BEFORE custom module imports)
+# 1. Dynamic Root Path Resolution
 FILE_PATH = Path(__file__).resolve()
-ROOT_DIR = FILE_PATH.parent.parent
+ROOT_DIR = FILE_PATH.parent.parent  # Points to project root
 
+# Ensure both project root and 'app' directory are in sys.path
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
+
+APP_DIR = os.path.join(ROOT_DIR, "app")
+if os.path.exists(APP_DIR) and str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
 
 # 2. Standard Libraries & Streamlit
 import streamlit as st
 import json
 import subprocess
 
-# 3. RAG Pipeline Import with Fallback
+# 3. RAG Pipeline Import with Robust Fallbacks
 try:
     from app.rag.retriever import RAGPipeline
 except ModuleNotFoundError:
-    from rag.retriever import RAGPipeline
+    try:
+        from rag.retriever import RAGPipeline
+    except ModuleNotFoundError:
+        # Ultimate fallback if relative module execution happens
+        sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+        from app.rag.retriever import RAGPipeline
 
+# Page Configuration
 st.set_page_config(
     page_title="Enterprise Company Intelligence Platform",
     page_icon="⚡",
