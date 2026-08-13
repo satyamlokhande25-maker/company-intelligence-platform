@@ -1,18 +1,20 @@
-import streamlit as st
-import json
-import os
-import subprocess
 import sys
+import os
 from pathlib import Path
 
-# Fix Project Root Path Resolution
+# 1. Root Path Resolution (Must run BEFORE custom module imports)
 FILE_PATH = Path(__file__).resolve()
 ROOT_DIR = FILE_PATH.parent.parent
 
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-# Import RAG Pipeline with Fallback
+# 2. Standard Libraries & Streamlit
+import streamlit as st
+import json
+import subprocess
+
+# 3. RAG Pipeline Import with Fallback
 try:
     from app.rag.retriever import RAGPipeline
 except ModuleNotFoundError:
@@ -25,7 +27,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Professional CSS Styling with Dark Glassmorphism UI
+# Dark Glassmorphism Styling
 st.markdown("""
     <style>
     /* Main Background Theme */
@@ -132,13 +134,13 @@ start_button = st.sidebar.button("🚀 Analyze & Extract Data", use_container_wi
 
 json_file_path = os.path.join(ROOT_DIR, "output", "company_profile.json")
 
-# Pipeline Execution (DYNAMIC URL PASSING FIX)
+# Pipeline Execution (Dynamic Subprocess Invocation)
 if start_button:
     with st.spinner(f"Extracting Data for {url_input}..."):
         try:
             main_script_path = os.path.join(ROOT_DIR, "main.py")
             
-            # Pass url_input dynamically as sys.argv argument to main.py
+            # Subprocess execution with explicit URL argument
             process = subprocess.run(
                 [sys.executable, main_script_path, url_input.strip()], 
                 capture_output=True, 
@@ -146,7 +148,7 @@ if start_button:
             )
             
             if process.returncode == 0:
-                # Clear Streamlit's cached RAG pipeline to force reload on new JSON
+                # Force Cache clear to re-initialize RAG index with new data
                 st.cache_resource.clear()
                 st.sidebar.success(f"Data Extraction Completed for {url_input}!")
                 st.rerun()
@@ -161,7 +163,7 @@ if os.path.exists(json_file_path):
     with open(json_file_path, "r", encoding="utf-8") as f:
         company_data = json.load(f)
 
-    # Glassmorphism Top Metric Panel
+    # Metric Panel
     m1, m2, m3, m4 = st.columns(4)
     with m1:
         st.markdown(f'<div class="metric-card"><div class="metric-value">{company_data.get("company_name", "N/A")}</div><div class="metric-label">Company</div></div>', unsafe_allow_html=True)
@@ -182,7 +184,7 @@ if os.path.exists(json_file_path):
         "📄 Raw Output JSON"
     ])
 
-    # TAB 1: RAG Assistant with Grounded Chat Display
+    # TAB 1: RAG Assistant
     with tab_rag:
         st.subheader("💬 Ask AI Assistant")
         st.caption("Responses are strictly grounded in extracted company profile documents.")
@@ -199,7 +201,6 @@ if os.path.exists(json_file_path):
                 with st.spinner("Searching Vector Database & Synthesizing Answer..."):
                     rag_response = rag.query(user_query)
 
-                    # Handle dictionary response from LLM or list of source chunks
                     if isinstance(rag_response, dict) and "answer" in rag_response:
                         st.markdown("### 🤖 Response:")
                         st.markdown(f'<div class="chat-response-box">{rag_response["answer"]}</div>', unsafe_allow_html=True)
@@ -213,7 +214,6 @@ if os.path.exists(json_file_path):
                                 st.caption(res["document"]["text"])
                                 st.divider()
                     else:
-                        # Fallback for direct chunk list with Similarity Filtering
                         SIMILARITY_THRESHOLD = 0.50
                         valid_results = [r for r in rag_response if r.get("score", 0) >= SIMILARITY_THRESHOLD]
 
