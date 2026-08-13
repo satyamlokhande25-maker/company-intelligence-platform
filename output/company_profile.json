@@ -1,0 +1,86 @@
+{
+    "company_name": "BestPeers",
+    "website": "https://bestpeers.com",
+    "company_type": null,
+    "industry": [
+        "Information Technology",
+        "Software Development",
+        "Data & AI",
+        "Consulting"
+    ],
+    "founded_year": "2017",
+    "about": "Your Partner in Progress Through Technology and Innovation",
+    "services": [
+        "Artificial Intelligence",
+        "Cloud",
+        "Consulting",
+        "Cyber Security",
+        "Data Analytics",
+        "Data Engineering",
+        "Data Science",
+        "Digital Marketing",
+        "Machine Learning",
+        "Mobile App Development",
+        "Software Development",
+        "Staff Augmentation",
+        "UI/UX",
+        "Web Development"
+    ],
+    "technologies": [
+        "AWS",
+        "Google Cloud",
+        "Java",
+        "JavaScript",
+        "Microsoft Azure",
+        "Node.js",
+        "Python",
+        "React"
+    ],
+    "employees": null,
+    "clients": null,
+    "projects": null,
+    "people": [
+        {
+            "name": "Kevin Davis",
+            "designation": "COO"
+        },
+        {
+            "name": "Rich Miller",
+            "designation": "CTO"
+        }
+    ],
+    "email": [
+        "resume@bestpeers.com",
+        "sales@bestpeers.com"
+    ],
+    "phone": [
+        "+12092607499",
+        "+12097064100"
+    ],
+    "locations": [],
+    "social_links": {
+        "linkedin": [
+            "https://www.linkedin.com"
+        ],
+        "facebook": [
+            "https://www.facebook.com"
+        ],
+        "instagram": [
+            "https://www.instagram.com"
+        ],
+        "youtube": [
+            "https://www.youtube.com"
+        ],
+        "twitter": [
+            "https://x.com"
+        ],
+        "github": []
+    },
+    "about_page": "https://bestpeers.com/about-us/",
+    "contact_page": "https://bestpeers.com/contact/",
+    "services_page": "https://bestpeers.com/ai-services/",
+    "careers_page": "https://bestpeers.com/career/",
+    "source_url": "https://bestpeers.com",
+    "scraped_at": "2026-08-13T13:51:06.167817",
+    "status": "success"
+}

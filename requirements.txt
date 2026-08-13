@@ -1,0 +1,11 @@
+selenium
+beautifulsoup4
+pandas
+openpyxl
+lxml
+python-dotenv
+streamlit
+langchain
+langchain-community
+faiss-cpu
+sentence-transformers
