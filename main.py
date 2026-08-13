@@ -14,6 +14,7 @@ from app.extractor.social import extract_social_information
 from app.extractor.technology import extract_technologies
 from app.extractor.people import extract_people
 from app.cleaner.company_cleaner import clean_company_data
+from app.rag.retriever import RAGPipeline
 
 
 def run_pipeline(target_url: str):
